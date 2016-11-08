@@ -1,41 +1,24 @@
 module Noname
   class Form
-    attr_reader :parent, :model, :attributes
+    include ::ActiveModel::Validations
 
-    delegate :fields, :nested_forms, :to => :metadata
+    extend Noname::Field
+    extend Noname::NestedForm
+
+    extend Noname::Translation
+
+    attr_reader :parent, :model, :attributes
 
     attr_accessor :_destroy
 
-    delegate :id, :persisted?, :new_record?, :marked_for_destruction?, :to => :model, :allow_nil => true
+    def initialize(model, attributes = {})
+      @model = model#|| build_model
 
-    def initialize(model, attributes = {}, parent = nil)
-      @model = model || build_model
-      @parent = parent
-      @attributes = attributes
+      assign_attributes(attributes)
     end
 
     def process
-      return false unless valid?
-
-      process_model!
-
-      nested_forms.each do |form|
-        form.process_model!
-      end
-    end
-
-    def build_model
-      return if parent.nil? || parent.model.nil?
-
-      if metadata.collection?
-        parent.model.send(metadata.name).build
-      else
-        parent.model.send("build_#{metadata.name}")
-      end
-    end
-
-    def build_model!
-      @model = build_model
+      process_model! if valid?
     end
 
     def process_model
@@ -44,40 +27,81 @@ module Noname
       else
         update_model
       end
+
+      nested_forms.each do |form|
+        form.process_model
+      end
     end
 
     def process_model!
-      if destroy_model?
-        destroy_model!
+      process_model and model.save
+    end
+
+    def build_model
+      return if parent.model.nil?
+
+      if metadata.collection?
+        parent.model.send(metadata.name).build
       else
-        update_model!
+        parent.model.send("build_#{metadata.name}")
       end
     end
 
     def update_model
+      return unless update_model?
+      build_model! if model.nil?
+
       fields.each do |field|
         model.send("#{field}=", send(field))
       end
+    end
+
+    def destroy_model
+      model.mark_for_destruction if model.present?
+    end
+
+    def build_model!
+      @model = build_model
     end
 
     def update_model!
       update_model and model.save
     end
 
-    def destroy_model
-      model.mark_for_destruction
+    def destroy_model!
+      model.destroy if model.present?
     end
 
-    def destroy_model!
-      model.destroy
+    def update_model?
+      true
     end
 
     def destroy_model?
       _destroy.to_b
     end
 
+    def assign_attributes(attributes)
+      return unless attributes.present?
+
+      attributes.each do |attribute, value|
+        send("#{attribute}=", value) if respond_to?("#{attribute}=")
+      end
+    end
+
     def metadata
       @metadata ||= self.class.metadata.for_instance(self)
+    end
+
+    %i(fields nested_forms).each do |method|
+      define_method method do
+        metadata.send(method)
+      end
+    end
+
+    %i(id persisted? new_record? marked_for_destruction?).each do |method|
+      define_method method do
+        model.send(method) unless model.nil?
+      end
     end
   end
 end

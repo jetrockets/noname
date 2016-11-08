@@ -1,4 +1,4 @@
-class Noname
+module Noname
   module Translation
     def i18n_scope
       :forms

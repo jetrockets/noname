@@ -36,7 +36,7 @@ module Noname
       define_method(name) do
         return instance_variable_get("@#{name}") if instance_variable_defined?("@#{name}")
 
-        nested_model = model.send(name) if model.present?
+        nested_model = model.send(name) unless model.nil?
 
         if nested_klass.metadata.collection?
           nested_form = Collection.new(self, nested_klass, nested_model)

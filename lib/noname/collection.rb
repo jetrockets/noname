@@ -1,10 +1,8 @@
-class Noname
+module Noname
   class Collection
     include Enumerable
     
     attr_reader :parent, :klass, :forms, :errors
-
-    delegate :metadata, :to => :klass
 
     # Comment!
     alias_method :to_ary, :to_a
@@ -84,6 +82,10 @@ class Noname
       forms.each(&:destroy_model!)
     end
 
+    def update_model?
+      forms.any?(&:update_model?)
+    end
+
     # FIXME
     def assign_attributes(attributes)
       reload_forms!
@@ -112,9 +114,13 @@ class Noname
         klass.new(parent, model)
       end
     end
-    #
+
     def models
-      @models ||= parent.model.send(metadata.name)
+      @models ||= parent.model.nil? ? [] : parent.model.send(metadata.name) 
+    end
+
+    def metadata
+      klass.metadata
     end
   end
 end

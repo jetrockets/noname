@@ -1,4 +1,4 @@
-class Noname
+module Noname
   class Metadata
     attr_reader :item, :options
 
