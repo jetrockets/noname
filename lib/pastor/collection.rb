@@ -1,4 +1,4 @@
-module Noname
+module Pastor
   class Collection
     include Enumerable
     

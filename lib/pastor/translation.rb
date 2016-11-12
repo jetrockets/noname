@@ -1,4 +1,4 @@
-module Noname
+module Pastor
   module Translation
     def i18n_scope
       :forms

@@ -7,7 +7,7 @@ require 'active_model/translation'
 require 'active_model/validator'
 require 'active_model/validations'
 
-module Noname
+module Pastor
   module Validations
   end
 end

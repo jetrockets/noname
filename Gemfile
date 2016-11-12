@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in noname.gemspec
+# Specify your gem's dependencies in pastor.gemspec
 gemspec

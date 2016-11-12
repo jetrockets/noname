@@ -1,4 +1,4 @@
-module Noname
+module Pastor
   module NestedForm
     def nested_form(name, options = {}, &block)
       klass = define_nested_klass(name, options, &block)
@@ -67,7 +67,7 @@ module Noname
     end
 
     def metadata
-      @metadata ||= Noname::Metadata.new(self)
+      @metadata ||= Pastor::Metadata.new(self)
     end
   end
 end

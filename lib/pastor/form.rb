@@ -1,11 +1,11 @@
-module Noname
+module Pastor
   class Form
     include ::ActiveModel::Validations
 
-    extend Noname::Field
-    extend Noname::NestedForm
+    extend Pastor::Field
+    extend Pastor::NestedForm
 
-    extend Noname::Translation
+    extend Pastor::Translation
 
     attr_reader :parent, :model, :attributes
 

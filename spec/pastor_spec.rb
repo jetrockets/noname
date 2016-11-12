@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Noname do
+describe Pastor do
   it 'has a version number' do
-    expect(Noname::VERSION).not_to be nil
+    expect(Pastor::VERSION).not_to be nil
   end
 
   it 'does something useful' do

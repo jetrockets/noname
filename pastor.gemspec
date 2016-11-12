@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'noname/version'
+require 'pastor/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "noname"
-  spec.version       = Noname::VERSION
+  spec.name          = "pastor"
+  spec.version       = Pastor::VERSION
   spec.authors       = ["Julia Egorova"]
   spec.email         = ["j.e.egorova@gmail.com"]
 
   spec.summary       = %q{Form Object}
   #spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "https://github.com/jetrockets/noname"
+  spec.homepage      = "https://github.com/jetrockets/pastor"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"

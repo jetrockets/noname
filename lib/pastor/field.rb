@@ -1,4 +1,4 @@
-module Noname
+module Pastor
   module Field
     #def field(field, options = {})
       #metadata.fields.add(field, options)

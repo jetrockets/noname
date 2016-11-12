@@ -1,4 +1,4 @@
-module Noname
+module Pastor
   class Metadata
     attr_reader :item, :options
 
