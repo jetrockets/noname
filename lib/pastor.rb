@@ -5,8 +5,9 @@ require "pastor/version"
 
 require "pastor/metadata"
 
-require "pastor/field"
-require "pastor/nested_form"
+require "pastor/form/model"
+require "pastor/form/field"
+require "pastor/form/nested"
 
 require "pastor/validations"
 require 'pastor/translation'
