@@ -1,45 +1,22 @@
 module Pastor
   class Metadata
-    attr_reader :item, :options
+    attr_reader :form, :fields, :nested_forms, :model
 
-    attr_accessor :name, :parent, :fields, :nested_forms
-
-    OPTIONS = %i(collection form)
-    attr_accessor *OPTIONS
-
-    alias_method :collection?, :collection
-
-    def initialize(item)
-      @item = item; @fields = []; @nested_forms = {}
+    def initialize(form)
+      @form = form; @model = nil
+      @fields = {}; @nested_forms = {}
     end
 
-    def options=(options)
-      return unless options.present?
-
-      @options = options.symbolize_keys.slice(*OPTIONS)
-
-      @options.each do |option, value|
-        send("#{option}=", value)
-      end
+    def field(name, options, &block)
+      fields[name] = Handler::Field.new(name, options, &block)
     end
 
-    def form=(klass)
-      @fields += klass.metadata.fields
-      @nested_forms.merge!(klass.metadata.nested_forms)
+    def nested_form(name, options, &blok)
+      nested_forms[name] = Handler::Form.new(name, options, &block)
     end
 
-    def for_instance(item)
-      metadata = Metadata.new(item)
-
-      metadata.name = name
-      metadata.fields = fields
-      metadata.options = options
-
-      metadata.nested_forms = nested_forms.map do |name, klass|
-        item.send(name)
-      end
-
-      metadata
+    def model(name)
+      handler = Handler::Model.new(name, klass)
     end
   end
 end

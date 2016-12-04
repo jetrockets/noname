@@ -1,5 +1,5 @@
 module Pastor
-  module Metadata
+  module Handlers
     class Base
       attr_reader :name, :options, :block
 

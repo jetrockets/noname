@@ -1,19 +1,20 @@
 module Pastor
   class Form
-    include ::ActiveModel::Validations
-
     extend Pastor::DSL
     extend Pastor::Translation
 
-    attr_reader :parent, :model, :attributes
+    include Pastor::Validations
 
-    attr_accessor :_destroy
+    attr_reader :model, :attributes
 
     def initialize(model, attributes = {})
-      @model = model#|| build_model
-
-      assign_attributes(attributes)
+      @model = model; @attributes = attributes
     end
+
+
+
+
+    attr_accessor :_destroy
 
     def process
       process_model! if valid?
@@ -27,10 +28,6 @@ module Pastor
       end
     end
 
-    def metadata
-      @metadata ||= self.class.metadata.for_instance(self)
-    end
-
     %i(fields nested_forms).each do |method|
       define_method method do
         metadata.send(method)
@@ -41,10 +38,6 @@ module Pastor
       define_method method do
         model.send(method) unless model.nil?
       end
-    end
-
-    def metadata
-      @metadata ||= Pastor::Metadata.new(self)
     end
   end
 end

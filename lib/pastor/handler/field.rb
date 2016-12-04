@@ -1,5 +1,5 @@
 module Pastor
-  module Metadata
+  module Handler
     # Options:
     #   :map     => (true, false, :field)
     #   :default => (value, ->{})

@@ -1,19 +1,23 @@
 module Pastor
   module DSL
+    def self.metadata
+      @metadata ||= Pastor::Metadata.new(self)
+    end
+
     # ########################
     # Model
 
     def model(name, klass)
-      meta = Metadata::Model.new(name, klass)
+      handler = metadata.model(name, klass)
     end
 
     # ########################
     # Field
 
     def field(name, options)
-      meta = Metadata::Field.new(name, options)
+      handler = metadata.filed(name, options)
 
-      define_accessor(name, meta)
+      define_accessor(name, handler)
     end
 
     def fields(*names)
@@ -28,43 +32,44 @@ module Pastor
     # Nested Forms
 
     def nested_form(name, options = {}, &block)
-      meta = Metadata::Form.new(name, options, &block)
+      handler = metadata.nested_form(name, options, &block)
 
-      define_accessor(name, meta)
-      define_attributes_accessor(name, meta)
+      define_accessor(name, handler)
+      define_attributes_accessor(name, handler)
     end
 
     def nested_forms(name, options = {}, &block)
-      meta = Metadata::Collection.new(name, options, &block)
+      handler = metadata.nested_form(name, options, &block)
+      #handler = Handler::Collection.new(name, options, &block)
 
-      define_accessor(name, meta)
-      define_attributes_accessor(name, meta)
+      define_accessor(name, handler)
+      define_attributes_accessor(name, handler)
     end
 
     # ########################
     # Define Accessors
 
-    def define_accessor(name, meta)
+    def define_accessor(name, handler)
       define_method(name) do
         if instance_variable_defined?("@#{name}")
           return instance_variable_get("@#{name}") 
         end
         
-        form.instance_variable_set("@#{name}", meta.get(self))
+        form.instance_variable_set("@#{name}", handler.get(self))
       end
 
       define_method("#{name}=") do |value|
-        item.instance_variable_set("@#{name}", meta.set(self, value))
+        item.instance_variable_set("@#{name}", handler.set(self, value))
       end
     end
 
-    def define_attributes_accessor(name, meta)
+    def define_attributes_accessor(name, handler)
       define_method("#{name}_attributes") do
-        meta.get_attributes(self)
+        handler.get_attributes(self)
       end
 
       define_method("#{name}_attributes=") do |attributes|
-        meta.set_attributes(self, attributes)
+        handler.set_attributes(self, attributes)
       end
     end
   end
