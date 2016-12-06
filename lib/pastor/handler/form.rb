@@ -35,19 +35,6 @@ module Pastor
           class_eval(&block) if block_given?
         end
       end
-
-      def define_nested_validations(name)
-        validate do |form|
-          nested_form = form.send(name)
-          next unless nested_form.update_model?
-
-          unless nested_form.valid?
-            nested_form.errors.messages.each do |nested_attribute, nested_errors|
-              errors.set(:"#{name}.#{nested_attribute}", nested_errors)
-            end
-          end
-        end
-      end
     end
   end
 end
