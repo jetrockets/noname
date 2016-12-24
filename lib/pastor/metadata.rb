@@ -1,22 +1,23 @@
 module Pastor
   class Metadata
-    attr_reader :form, :fields, :nested_forms, :model
+    attr_reader :form, :model, :fields, :nested_forms
 
     def initialize(form)
       @form = form; @model = nil
+
       @fields = {}; @nested_forms = {}
     end
 
-    def field(name, options, &block)
-      fields[name] = Handler::Field.new(name, options, &block)
-    end
-
-    def nested_form(name, options, &blok)
-      nested_forms[name] = Handler::Form.new(name, options, &block)
-    end
-
-    def model(name)
-      handler = Handler::Model.new(name, klass)
+    # ?
+    def register(type, handler)
+      case type
+        when :model
+          @model = handler
+        when :field
+          fields[handler.name] = handler
+        when :nested_form
+          nested_forms[handler.name] = handler
+      end
     end
   end
 end

@@ -10,7 +10,7 @@ module Pastor
       end
 
       def get(form)
-        klass.new(form, form.model.send(name))
+        klass.new(form, form.model.send(name), form.raw_attributes[name])
       end
 
       def set(form, value)

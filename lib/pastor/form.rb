@@ -1,14 +1,24 @@
 module Pastor
   class Form
-    extend Pastor::DSL
+    extend Pastor::Syntax
     extend Pastor::Translation
 
     include Pastor::Validations
 
     attr_reader :model, :raw_attributes
 
-    def initialize(model, attributes = {})
-      @model = model; @raw_attributes = attributes
+    def initialize(model, raw_attributes = {})
+      @model = model; @raw_attributes = raw_attributes
+
+      self.attributes = raw_attributes
+    end
+
+    def attributes=(attributes)
+      return if attributes.nil?
+
+      attributes.each do |attribute, value|
+        send("#{attribute}=", value) if respond_to?("#{attribute}=")
+      end
     end
 
 
@@ -20,13 +30,6 @@ module Pastor
       process_model! if valid?
     end
 
-    def assign_attributes(attributes)
-      return unless attributes.present?
-
-      attributes.each do |attribute, value|
-        send("#{attribute}=", value) if respond_to?("#{attribute}=")
-      end
-    end
 
     %i(id persisted? new_record? marked_for_destruction?).each do |method|
       define_method method do

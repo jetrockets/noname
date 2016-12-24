@@ -1,6 +1,8 @@
 module Pastor
 end
 
+require 'forwardable'
+
 require "pastor/version"
 
 require "pastor/metadata"
