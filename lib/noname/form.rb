@@ -80,6 +80,20 @@ module Noname
       _destroy.to_b
     end
 
+    def attributes
+      hash = {}
+
+      fields.each do |field|
+        hash[field] = send(field)
+      end
+
+      nested_forms.each do |form|
+        hash["#{form.metadata.name}_attributes"] = form.attributes
+      end
+
+      hash
+    end
+
     def assign_attributes(attributes)
       return unless attributes.present?
 

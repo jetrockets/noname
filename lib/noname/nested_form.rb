@@ -47,6 +47,10 @@ module Noname
         instance_variable_set("@#{name}", nested_form)
       end
 
+      define_method("#{name}_attributes") do
+        send(name).attributes
+      end
+
       # Comment!
       define_method("#{name}_attributes=") do |attributes|
         send(name).assign_attributes(attributes)

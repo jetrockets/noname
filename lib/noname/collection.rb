@@ -86,6 +86,10 @@ module Noname
       forms.any?(&:update_model?)
     end
 
+    def attributes
+      forms.map(&:attributes)
+    end
+
     # FIXME
     def assign_attributes(attributes)
       reload_forms!
