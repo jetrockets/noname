@@ -7,7 +7,7 @@ module Noname
 
     extend Noname::Translation
 
-    attr_reader :parent, :model, :attributes
+    attr_reader :parent, :model
 
     attr_accessor :_destroy
 
@@ -78,6 +78,12 @@ module Noname
 
     def destroy_model?
       _destroy.to_b
+    end
+
+    def errors=(values)
+      values.each do |name, error|
+        errors.add(name, error)
+      end
     end
 
     def attributes
