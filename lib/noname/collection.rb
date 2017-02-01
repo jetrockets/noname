@@ -112,10 +112,19 @@ module Noname
       build_form! if build_form?
     end
 
-    # FIXME
+    # FIXBS
     def reload_forms!
-      @forms = models.reload.map do |model|
+      reload_models!
+
+      @forms = (models || []).map do |model|
         klass.new(parent, model)
+      end
+    end
+
+    # FIXBS
+    def reload_models!
+      if parent.model.present?
+        @models = parent.model.send(metadata.name)
       end
     end
 
