@@ -90,7 +90,7 @@ module Noname
       hash = {}
 
       if model.respond_to?(:id)
-        hash[:id] => model.id
+        hash[:id] = model.id
       end
 
       fields.each do |field|
