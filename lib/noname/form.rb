@@ -89,6 +89,10 @@ module Noname
     def attributes
       hash = {}
 
+      if model.respond_to?(:id)
+        hash[:id] => model.id
+      end
+
       fields.each do |field|
         hash[field] = send(field)
       end
