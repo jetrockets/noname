@@ -77,7 +77,7 @@ module Noname
     end
 
     def destroy_model?
-      _destroy.to_b
+      to_bool(_destroy)
     end
 
     def errors=(values)
@@ -126,6 +126,11 @@ module Noname
       define_method method do
         model.send(method) unless model.nil?
       end
+    end
+
+    # Remove it when type coercion is added
+    def to_bool(value)
+      !(value.nil? || value == "" || value =~ /^(false|f|no|n|0)$/i || value == false)
     end
   end
 end
