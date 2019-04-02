@@ -79,6 +79,10 @@ module Noname
     def destroy_model?
       to_bool(_destroy)
     end
+    
+    def valid?(context = nil)
+      destroy_model? || super
+    end
 
     def errors=(values)
       values.each do |name, error|
