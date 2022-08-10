@@ -64,7 +64,7 @@ module Noname
 
         unless nested_form.valid?
           nested_form.errors.messages.each do |nested_attribute, nested_errors|
-            errors.set(:"#{name}.#{nested_attribute}", nested_errors)
+            errors.add(:"#{name}.#{nested_attribute}", nested_errors)
           end
         end
       end

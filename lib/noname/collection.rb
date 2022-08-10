@@ -37,7 +37,7 @@ module Noname
         next if form.valid?
 
         form.errors.messages.each do |form_attribute, form_errors|
-          errors.set(form_attribute, (errors.get(form_attribute) || []) + form_errors)
+          errors.add(form_attribute, (errors[form_attribute] || []) + form_errors)
         end
       end
 
