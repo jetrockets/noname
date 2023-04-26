@@ -13,7 +13,7 @@ module Noname
     end
 
     def human_attribute_name(attribute, options = {})
-      I18n.translate("#{i18n_scope}.#{attributes_scope}.#{attribute}", options)
+      I18n.translate("#{i18n_scope}.#{attributes_scope}.#{attribute}", **options)
     end
 
     def model_name
